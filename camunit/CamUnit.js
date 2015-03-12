@@ -25,13 +25,11 @@ function CamUnit() {
             self.snap();
         }, intvl );
         console.log( "Taking snaps at every %d millisecs.", intvl );
-        console.log( intvlId );
     };
     
     self.stopContinuous = function() {
         clearInterval( intvlId );
         console.log( "Stops taking snaps now." );
-        console.log( intvlId );
     };
 };
 
