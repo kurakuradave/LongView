@@ -1,0 +1,19 @@
+div( ng-controller='CamCtrl' )
+    button.btn.btn-link(ng-click="logout()") Logout
+    div.alert.alert-warning( ng-repeat="message in getMessages()", role="alert" )
+        p {{message}}
+    div
+        img( src="{{daPic}}", alt="The View" )
+        p
+            button.btn.btn-primary( ng-click="panLeft()" ) Pan Left
+            &nbsp
+            &nbsp
+            button.btn.btn-primary( ng-click="panRight()" ) Pan Right
+            &nbsp
+            &nbsp
+            button.btn.btn-danger( ng-click="toggleStreamImage()" ) {{streamImageBtnCaption}}
+        p Temperature:  {{hyper.Temperature}} °C
+        p Air Pressure:  {{hyper.Pressure}} Pa
+        p
+            button.btn.btn-danger( ng-click="toggleStreamSensor()" ) {{streamSensorBtnCaption}}
+
