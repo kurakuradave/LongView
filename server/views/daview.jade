@@ -1,5 +1,4 @@
 div( ng-controller='CamCtrl' )
-    button.btn.btn-link(ng-click="logout()") Logout
     div.alert.alert-warning( ng-repeat="message in getMessages()", role="alert" )
         p {{message}}
     div
