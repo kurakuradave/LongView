@@ -3,6 +3,7 @@ html( ng-app='LongViewApp' )
   head
     
         link(rel='stylesheet', href='/javascripts/bootstrap-3.1.1-dist/css/bootstrap.css')
+        link(rel='stylesheet', href='/stylesheets/lvstyle.css')
         script(type='text/javascript', src='javascripts/jquery-2.1.1.min.js')
         script(type='text/javascript', src='javascripts/bootstrap-3.1.1-dist/js/bootstrap.min.js')
         script(type='text/javascript', src='javascripts/angular.js')
@@ -10,30 +11,35 @@ html( ng-app='LongViewApp' )
         script( type='text/javascript', src='/socket.io/socket.io.js' )        
         script( type='text/javascript', src='javascripts/LongViewApp.js' )        
 
-
         div(ng-controller="NavbarCtrl")
-          nav.navbar.navbar-fixed-top
-            .navbar-header
-                .navbar-brand
-                    |LongView
-            ul.nav.navbar-nav.navbar-left
-                li.active(ng-if="hasUser")
-                    a.navbar-btn(href="", ng-click="daviewClk()")
-                        span.glyphicon.glyphicon-eye-open
-                        | &nbsp Watch
-                li.active
-                    a.navbar-btn(href="http://www.github.com/kurakuradave/" target="_blank")
-                        img(src="./images/GitHub-Mark-Light-16px.png")
-                        | &nbsp Code
-                li.active
-                    a.navbar-btn(href="", ng-click="aboutClk()")
-                        span.glyphicon.glyphicon-info-sign 
-                        | &nbsp About
-            ul.nav.navbar-nav.navbar-right
-                li.active(ng-if="hasUser")
-                    a.navbar-btn(href="", ng-click="logout()")
-                        span.glyphicon.glyphicon-log-out
-                        | &nbsp Logout &nbsp
+          nav.navbar.navbar-default.navbar-fixed-top
+            div.container-fluid
+              div.navbar-header
+                button.navbar-toggle.collapsed(type="button", data-toggle="collapse", data-target="#lv-navbar-collapse-1")
+                  span.sr-only Toggle navigation
+                  span.icon-bar
+                  span.icon-bar
+                  span.icon-bar
+                span.navbar-brand LongView
+              div.collapse.navbar-collapse(id="lv-navbar-collapse-1")
+                ul.nav.navbar-nav.navbar-left
+                  li.active(ng-if="hasUser")
+                    a(href="", ng-click="daviewClk()")
+                      span.glyphicon.glyphicon-eye-open
+                      | &nbsp Watch
+                  li.active
+                    a(href="http://www.github.com/kurakuradave/" target="_blank")
+                      img(src="./images/GitHub-Mark-Light-16px.png")
+                      | &nbsp Code
+                  li.active
+                    a(href="", ng-click="aboutClk()")
+                      span.glyphicon.glyphicon-info-sign 
+                      | &nbsp About
+                ul.nav.navbar-nav.navbar-right
+                  li.active(ng-if="hasUser")
+                    a(href="", ng-click="logout()")
+                      span.glyphicon.glyphicon-log-out
+                      | &nbsp Logout
   body
     script.
         var socket = io()
