@@ -2,14 +2,16 @@ doctype html
 html( ng-app='LongViewApp' )
   head
     
-        link(rel='stylesheet', href='/javascripts/bootstrap-3.1.1-dist/css/bootstrap.css')
-        link(rel='stylesheet', href='/stylesheets/lvstyle.css')
         script(type='text/javascript', src='javascripts/jquery-2.1.1.min.js')
         script(type='text/javascript', src='javascripts/bootstrap-3.1.1-dist/js/bootstrap.min.js')
         script(type='text/javascript', src='javascripts/angular.js')
         script(type='text/javascript', src='javascripts/angular-route.js')
         script( type='text/javascript', src='/socket.io/socket.io.js' )        
         script( type='text/javascript', src='javascripts/LongViewApp.js' )        
+        link(rel='stylesheet', href='/javascripts/bootstrap-3.1.1-dist/css/bootstrap.css')
+        link(rel='stylesheet', href='/stylesheets/lvstyle.css')
+        meta(name="viewport", content="width=device-width, initial-scale=1.0")
+
 
         div(ng-controller="NavbarCtrl")
           nav.navbar.navbar-default.navbar-fixed-top
