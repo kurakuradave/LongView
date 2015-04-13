@@ -5,6 +5,8 @@ var pairedServer = require( './pairedServer.js' );
 var cfg = require( './LongViewConfig.js' );
 var fullServerAddress = cfg.serverAddress + ":" + cfg.serverPort;
 
+var self = this;
+
 // utilities needed
 var fs = require( 'fs' );
 var reqq = require( 'request' );
@@ -67,7 +69,10 @@ var connectsp = function( daPath ) {
         disconnectedCallback: function(data) {
             console.log( "!!! Disconnected from Arduino !!!" );
             console.log( "Reconnecting after 10 seconds" );
-            setTimeout( sp = connectsp(arduino.comName), 10000 );
+            setTimeout( function() {  
+                self.connectSp();
+                console.log(sp);
+            }, 10000 );
         }
     });
     return aPort;
@@ -84,42 +89,44 @@ serialport.list(function (err, ports) {
         console.log( arduino  );
     }
   });
+  
+self.connectSp = function() {
+    sp = connectsp( arduino.comName);
+    sp.on("open", function () {
+        console.log('Serialport to Arduino opened!');
+        sp.on('data', function(data) {
+            spFlushed = false;
+            var obj = JSON.parse( data );
+            if( obj.Temperature ) { // sensor data
+                lastSensorData = obj; 
+            } else if( obj ) { // other messages
+                fromArds.push( obj );
+            }
+            sp.flush( function(err) {  
+                if( err ) console.log( err );
+                else {
+                    spFlushed = true;
+                }
+            } );
+        });
+        sp.on( 'close', function(data) {
+            console.log( "connection to Arduino closed!" );
+            console.log(data);
+        } );
+        sp.on( 'error', function(err) {  
+            console.log( 'uh oh, an error happenned:' );
+            console.log( err );
+        } );
+    });
+};
 
   // if arduino NOT found
   if( arduino.comName == "" ) {
     console.log( "Error: Can't Find Arduino On USB - Is It Plugged In?" );
     process.exit()
   } else { // arduino FOUND, open the serialport
-    sp = connectsp( arduino.comName);
-        sp.on("open", function () {
-            console.log('Serialport to Arduino opened!');
-            sp.on('data', function(data) {
-                spFlushed = false;
-                var obj = JSON.parse( data );
-                if( obj.Temperature ) { // sensor data
-                    lastSensorData = obj; 
-                } else if( obj ) { // other messages
-                    fromArds.push( obj );
-                }
-                sp.flush( function(err) {  
-                    if( err ) console.log( err );
-                    else {
-                        spFlushed = true;
-                    }
-                } );
-            });
-            sp.on( 'close', function(data) {
-                console.log( "connection to Arduino closed!" );
-                console.log(data);
-            } );
-            sp.on( 'error', function(err) {  
-                console.log( 'uh oh, an error happenned:' );
-                console.log( err );
-            } );
-        });
-      
+      self.connectSp();
   }
-
 });
 
 
