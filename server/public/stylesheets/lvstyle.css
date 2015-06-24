@@ -12,4 +12,17 @@
 
 .svg-graph-component{
     background-color:#c7ccce;
+}
 
+.axis path,
+.axis line {
+    fill: none;
+    stroke: black;
+    stroke-width: 2px;
+    shape-rendering: crispEdges;
+}
+
+.axis text {
+    font-family: sans-serif;
+    font-size: 11px;
+}

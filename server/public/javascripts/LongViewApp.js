@@ -101,6 +101,8 @@ angular.module( 'LongViewApp', ['ngRoute'] )
         $scope.stoppedTmptPlot = false;
         $scope.hasScreenTmptPlot = false;
         $scope.shouldClearObs = false;
+        $scope.dlo = 28;
+        $scope.dhi = 29;
 
 
 
@@ -205,16 +207,16 @@ angular.module( 'LongViewApp', ['ngRoute'] )
         };
         
         $scope.placeNewOb = function ( d, i ) {
-            if( d.index < 20 )
-                return( i * 10 );
-            else
+            //if( d.index < 20 )
+            //    return( i * 10 );
+            //else
                 return( 19 * 10 );
         };
         
         $scope.placeOldObs = function ( d, i ) {
-            if( $scope.hyperObsIndex < 20 )
-                return( d.index * 10 );
-            else
+            //if( $scope.hyperObsIndex < 20 )
+            //    return( d.index * 10 );
+            //else
                 return( (d.index - ($scope.hyperObsIndex - 20) ) * 10 );
         };
         
@@ -235,14 +237,14 @@ angular.module( 'LongViewApp', ['ngRoute'] )
                 
             rects.enter()
                 .append( "rect" )
-                .attr( "x", function( d, i ) { return $scope.placeNewOb( d, i );  } )
-                .attr( "y", function( d, i ) { return ( 300 - $scope.scaleTmpt( d.Temperature ) ) } )
+                .attr( "x", function( d, i ) { return 20 + $scope.placeNewOb( d, i );  } )
+                .attr( "y", function( d, i ) { return ( 50 + $scope.scaleTmpt( d.Temperature ) - 5 ) } )
                 .attr( "width", 10 )
                 .attr( "height", 10 );
 
             rects
-                .attr( "x", function( d, i ) { return $scope.placeOldObs( d, i );  } )
-                .attr( "y", function( d, i ) { return ( 300 - $scope.scaleTmpt( d.Temperature ) ) } )
+                .attr( "x", function( d, i ) { return 20 + $scope.placeOldObs( d, i );  } )
+                .attr( "y", function( d, i ) { return ( 50 + $scope.scaleTmpt( d.Temperature ) - 5 ) } )
                 .attr( "width", 10 )
                 .attr( "height", 10 )
                 .attr( "fill", function( d, i ) { return $scope.determineFill( d, i ) } );          
@@ -258,6 +260,15 @@ angular.module( 'LongViewApp', ['ngRoute'] )
         
         $scope.updateAirpPlot = function(){
         
+        };
+        
+        $scope.adjustScale = function( data ) {
+            if( data.Temperature < $scope.dlo || data.Temperature > $scope.dhi ) {
+                $scope.dlo = Math.floor( data.Temperature );
+                $scope.dhi = $scope.dlo +1;
+                $scope.scaleTmpt.domain( [$scope.dlo,$scope.dhi] );
+                $scope.drawAxis();
+            }
         };
         
         $scope.updateObs = function( data ) {
@@ -302,6 +313,15 @@ angular.module( 'LongViewApp', ['ngRoute'] )
             }
         };
         
+        $scope.drawAxis = function() {
+           gAxis.call(
+               d3.svg.axis()
+               .scale( $scope.scaleTmpt )
+               .orient( "right" )          
+               .tickFormat( function(d) { return( d + "°C" ) } ) 
+           );        
+        };
+        
         socket.on( 'imgStopServer', function( data ) {  
             $scope.streamingImage = false;
             $scope.setStreamImageCaption();
@@ -319,6 +339,7 @@ angular.module( 'LongViewApp', ['ngRoute'] )
             $scope.$apply( function() {
                 $scope.hyper = data;
             } );
+            $scope.adjustScale( data );
             $scope.updateObs( data );
         } );
         
@@ -346,14 +367,12 @@ angular.module( 'LongViewApp', ['ngRoute'] )
         
         function init() {
                   
-            $scope.svgAirpPlot = d3.select( "#AirpPlot" ).append( "svg" )
-                                 .attr( "width", 300 )
-                                 .attr( "height", 200 )        
-                                 .attr( "class", "svg-graph-component");        
-                  
             $scope.scaleTmpt = d3.scale.linear()
-                               .domain( [31, 32] )
-                               .range( [0, 300] );        
+                               .domain( [20, 21] )
+                               .range( [250,0] );
+           
+           $scope.drawAxis();
+                                       
             if( usersService.getUser().authed == "pass" ) {
                 // uncomment to kickstart sensor stream
                 //$scope.sensorStreamStart();            

@@ -3,11 +3,20 @@ script.
                                  .attr( "width", 300 )
                                  .attr( "height", 300 )
                                  .attr( "class", "svg-graph-component");
+    var gTitle = svgTmptPlot.append( "g" )
+                                 .append( "text" )
+                                 .text( "Temperature" )
+                                 .attr( "x", 150 )
+                                 .attr( "y", 30 )
+                                 .attr( "font-style", "20px" )
+                                 .style("text-anchor", "middle")
     var gTmptPlot = svgTmptPlot.append( "g" )
                                  .attr( "class", "plotRects" );
     var gScreen = svgTmptPlot.append( "g" )
                                  .attr( "class", "screen" );
-                        
+    var gAxis = svgTmptPlot.append( "g" )
+                        .attr( "class", "axis" )
+                        .attr("transform", "translate(250, 50)");                     
 
 
 div.container-fluid.lvmaindiv( ng-controller='CamCtrl' )
@@ -24,20 +33,16 @@ div.container-fluid.lvmaindiv( ng-controller='CamCtrl' )
                 &nbsp
                 &nbsp
                 button.btn.btn-primary( ng-click="panRight()" ) Pan Right
-                &nbsp
-                &nbsp
+    div.row
+        div.col-sm-10.col-sm-offset-1
+            div.imagery
                 button.btn.btn-danger( ng-click="toggleStreamImage()" ) {{streamImageBtnCaption}}
     div.row
         div.col-sm-6    
             p Temperature:  {{hyper.Temperature}} °C
-        div.col-sm-6
-            p Air Pressure:  {{hyper.Pressure}} Pa
-    div.row
+            p Air Pressure:  {{hyper.Pressure}} Pa        
+            button.btn.btn-danger( ng-click="toggleStreamSensor()" ) {{streamSensorBtnCaption}}              
         div.col-sm-6
             div(id="TmptPlot")
-        div.col-sm-6      
-            div(id="AirpPlot")
-    div.row
-        div.col-sm-4.col-sm-offset-4      
-            button.btn.btn-danger( ng-click="toggleStreamSensor()" ) {{streamSensorBtnCaption}}
+
 
