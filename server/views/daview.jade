@@ -1,18 +1,43 @@
-div.lvmaindiv( ng-controller='CamCtrl' )
-    div.alert.alert-warning( ng-repeat="message in getMessages()", role="alert" )
+script.
+    var svgTmptPlot = d3.select( "#TmptPlot" ).append( "svg" )
+                                 .attr( "width", 300 )
+                                 .attr( "height", 300 )
+                                 .attr( "class", "svg-graph-component");
+    var gTmptPlot = svgTmptPlot.append( "g" )
+                                 .attr( "class", "plotRects" );
+    var gScreen = svgTmptPlot.append( "g" )
+                                 .attr( "class", "screen" );
+                        
+
+
+div.container-fluid.lvmaindiv( ng-controller='CamCtrl' )
+    div.row.alert.alert-warning( ng-repeat="message in getMessages()", role="alert" )
         p {{message}}
-    div
-        img( src="{{daPic}}", alt="The View" )
-        p
-            button.btn.btn-primary( ng-click="panLeft()" ) Pan Left
-            &nbsp
-            &nbsp
-            button.btn.btn-primary( ng-click="panRight()" ) Pan Right
-            &nbsp
-            &nbsp
-            button.btn.btn-danger( ng-click="toggleStreamImage()" ) {{streamImageBtnCaption}}
-        p Temperature:  {{hyper.Temperature}} °C
-        p Air Pressure:  {{hyper.Pressure}} Pa
-        p
+    div.row
+        div.col-sm-10.col-sm-offset-1
+            div.imagery
+                img( src="{{daPic}}", alt="The View" )
+    div.row       
+        div.col-sm-10.col-sm-offset-1
+            div.imagery
+                button.btn.btn-primary( ng-click="panLeft()" ) Pan Left
+                &nbsp
+                &nbsp
+                button.btn.btn-primary( ng-click="panRight()" ) Pan Right
+                &nbsp
+                &nbsp
+                button.btn.btn-danger( ng-click="toggleStreamImage()" ) {{streamImageBtnCaption}}
+    div.row
+        div.col-sm-6    
+            p Temperature:  {{hyper.Temperature}} °C
+        div.col-sm-6
+            p Air Pressure:  {{hyper.Pressure}} Pa
+    div.row
+        div.col-sm-6
+            div(id="TmptPlot")
+        div.col-sm-6      
+            div(id="AirpPlot")
+    div.row
+        div.col-sm-4.col-sm-offset-4      
             button.btn.btn-danger( ng-click="toggleStreamSensor()" ) {{streamSensorBtnCaption}}
 

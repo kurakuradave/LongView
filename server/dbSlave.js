@@ -6,8 +6,6 @@ var daObject = {};
 
 this.getAllUsers = function( callback ) {
     db.open( function( err, db ) {
-        console.log( "inside db.open " );
-        console.log( daObject );
         if( err ) {
             console.log( "ERROR accessing db:" );
             console.log( err.message );
@@ -29,16 +27,11 @@ this.getAllUsers = function( callback ) {
 }
 
 var verifyPass = function( req, callback ) {
-    console.log( "-------------------------" );
-    console.log( req.body );
     daObject = req.body;
     this.getAllUsers( function( qresults ) {  
-        console.log( "qresults are" );
-        console.log( qresults );
         var uname = req.body.username;
         var pw = req.body.passw;
         var found = false;
-        console.log( req.body );
         qresults.forEach( function( qr ) {
 
             if( qr.username == uname && qr.passw == pw )
@@ -48,6 +41,7 @@ var verifyPass = function( req, callback ) {
     } );
 };
 
+// for testing, not used
 var doQuery = function( req, callback ) {
     db.open( function( err, db ) {
         if( !err ) {
