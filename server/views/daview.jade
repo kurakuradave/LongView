@@ -3,21 +3,23 @@ script.
                                  .attr( "width", 300 )
                                  .attr( "height", 300 )
                                  .attr( "class", "svg-graph-component");
-    var gTitle = svgTmptPlot.append( "g" )
-                                 .append( "text" )
-                                 .text( "Temperature" )
-                                 .attr( "x", 150 )
-                                 .attr( "y", 30 )
-                                 .attr( "font-style", "20px" )
-                                 .style("text-anchor", "middle")
+    var gTitle = svgTmptPlot.append( "g" );
+    gTitle.append( "text" )
+        .attr( "class", "staticTitle" )
+        .text( "Temperature" )
+        .attr( "x", 150 )
+        .attr( "y", 35 )
+        .attr( "font-style", "20px" )
+        .style("text-anchor", "middle")
+    var gAxis = svgTmptPlot.append( "g" )
+                        .attr( "class", "axis" )
+                        .attr("transform", "translate(250, 40)");                     
+    var gGrid = svgTmptPlot.append( "g" )
+                        .attr( "class", "grid" );
     var gTmptPlot = svgTmptPlot.append( "g" )
                                  .attr( "class", "plotRects" );
     var gScreen = svgTmptPlot.append( "g" )
                                  .attr( "class", "screen" );
-    var gAxis = svgTmptPlot.append( "g" )
-                        .attr( "class", "axis" )
-                        .attr("transform", "translate(250, 50)");                     
-
 
 div.container-fluid.lvmaindiv( ng-controller='CamCtrl' )
     div.row.alert.alert-warning( ng-repeat="message in getMessages()", role="alert" )
@@ -38,11 +40,13 @@ div.container-fluid.lvmaindiv( ng-controller='CamCtrl' )
             div.imagery
                 button.btn.btn-danger( ng-click="toggleStreamImage()" ) {{streamImageBtnCaption}}
     div.row
-        div.col-sm-6    
-            p Temperature:  {{hyper.Temperature}} °C
-            p Air Pressure:  {{hyper.Pressure}} Pa        
-            button.btn.btn-danger( ng-click="toggleStreamSensor()" ) {{streamSensorBtnCaption}}              
         div.col-sm-6
-            div(id="TmptPlot")
+            div.imagery   
+                p Temperature:  {{hyper.Temperature}} °C
+                p Air Pressure:  {{hyper.Pressure}} Pa        
+                button.btn.btn-danger( ng-click="toggleStreamSensor()" ) {{streamSensorBtnCaption}}              
+        div.col-sm-6
+            div.imagery
+                div(id="TmptPlot")
 
 

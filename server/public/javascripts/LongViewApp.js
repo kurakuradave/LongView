@@ -238,13 +238,13 @@ angular.module( 'LongViewApp', ['ngRoute'] )
             rects.enter()
                 .append( "rect" )
                 .attr( "x", function( d, i ) { return 20 + $scope.placeNewOb( d, i );  } )
-                .attr( "y", function( d, i ) { return ( 50 + $scope.scaleTmpt( d.Temperature ) - 5 ) } )
+                .attr( "y", function( d, i ) { return ( 40 + $scope.scaleTmpt( d.Temperature ) - 5 ) } )
                 .attr( "width", 10 )
                 .attr( "height", 10 );
 
             rects
                 .attr( "x", function( d, i ) { return 20 + $scope.placeOldObs( d, i );  } )
-                .attr( "y", function( d, i ) { return ( 50 + $scope.scaleTmpt( d.Temperature ) - 5 ) } )
+                .attr( "y", function( d, i ) { return ( 40 + $scope.scaleTmpt( d.Temperature ) - 5 ) } )
                 .attr( "width", 10 )
                 .attr( "height", 10 )
                 .attr( "fill", function( d, i ) { return $scope.determineFill( d, i ) } );          
@@ -285,10 +285,27 @@ angular.module( 'LongViewApp', ['ngRoute'] )
             $scope.updateAirpPlot( $scope.hyperObs );
         };
         
+        $scope.remDynamicTitle = function() {
+            gTitle.selectAll(".dynamicTitle").remove();
+        };
+        
+        $scope.applyDynamicTitle = function() {
+            gTitle.append( "text" )
+                .attr( "class", "dynamicTitle" )
+                .text( "LIVE Datastream" )
+                .attr( "x", 50 )
+                .attr( "y", 15 )
+                .style( "font-style", "8px" )
+                .style( "font-family", "sans-serif" )
+                .style("text-anchor", "middle")    
+                .style( "fill", "red" );            
+        };
+        
         $scope.resumeTmptPlot = function() {
             $scope.stoppedTmptPlot = false;
             gScreen.selectAll( "rect" )
                 .remove();
+            $scope.applyDynamicTitle();
             $scope.hasScreenTmptPlot = false;
         };
         
@@ -301,6 +318,7 @@ angular.module( 'LongViewApp', ['ngRoute'] )
                 if( !$scope.hasScreenTmptPlot ) {
                     console.log( "applying screen" );
                     $scope.hasScreenTmptPlot = true;
+                    $scope.remDynamicTitle();
                     gScreen
                         .append( "rect" )
                         .attr( "x", 0 )
@@ -319,7 +337,26 @@ angular.module( 'LongViewApp', ['ngRoute'] )
                .scale( $scope.scaleTmpt )
                .orient( "right" )          
                .tickFormat( function(d) { return( d + "°C" ) } ) 
-           );        
+           );
+           $scope.drawGrids();
+       };
+       
+       
+       
+       $scope.drawGrids = function() {
+           gGrid.selectAll("line.horizontalGrid").data($scope.scaleTmpt.ticks(10)).enter()
+               .append("line")
+               .attr({
+                   "class":"horizontalGrid",
+                   "x1" : 10,
+                   "x2" : 250,
+                   "y1" : function(d){ return 40 + $scope.scaleTmpt(d);},
+                   "y2" : function(d){ return 40 + $scope.scaleTmpt(d);},
+                   "fill" : "none",
+                   "shape-rendering" : "crispEdges",
+                   "stroke" : "#dddddd",
+                   "stroke-width" : "1px"
+               });        
         };
         
         socket.on( 'imgStopServer', function( data ) {  
