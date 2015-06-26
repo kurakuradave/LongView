@@ -352,10 +352,10 @@ angular.module( 'LongViewApp', ['ngRoute'] )
                .append("line")
                .attr({
                    "class":"horizontalGrid",
-                   "x1" : 10,
-                   "x2" : 250,
-                   "y1" : function(d){ return 40 + $scope.scaleTmpt(d);},
-                   "y2" : function(d){ return 40 + $scope.scaleTmpt(d);},
+                   "x1" : margin.left,
+                   "x2" : plot.width - margin.right,
+                   "y1" : function(d){ return margin.top + $scope.scaleTmpt(d);},
+                   "y2" : function(d){ return margin.top + $scope.scaleTmpt(d);},
                    "fill" : "none",
                    "shape-rendering" : "crispEdges",
                    "stroke" : "#dddddd",
