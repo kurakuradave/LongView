@@ -1,25 +1,33 @@
 script.
+    var plot = { width : 300, height : 300 };
+    var plotEye = { width : 10, height : 10, ymid : 5 };
+    var margin = {top: 40, right: 50, bottom: 10, left: 20};
     var svgTmptPlot = d3.select( "#TmptPlot" ).append( "svg" )
-                                 .attr( "width", 300 )
-                                 .attr( "height", 300 )
-                                 .attr( "class", "svg-graph-component");
+                                 .attr( { "width" : plot.width,
+                                          "height" : plot.height,
+                                          "class" : "svg-graph-component"
+                                        } );
+                                 
     var gTitle = svgTmptPlot.append( "g" );
     gTitle.append( "text" )
         .attr( "class", "staticTitle" )
         .text( "Temperature" )
-        .attr( "x", 150 )
-        .attr( "y", 35 )
-        .attr( "font-style", "20px" )
-        .style("text-anchor", "middle")
+            .style("text-anchor", "middle")
+            .attr( { "x" : plot.width / 2,
+                     "y" : margin.top - 5 } )
+
     var gAxis = svgTmptPlot.append( "g" )
-                        .attr( "class", "axis" )
-                        .attr("transform", "translate(250, 40)");                     
+                        .attr( { "class" : "axis",
+                                 "transform" : "translate( " + (plot.width - margin.right) + "," + (margin.top) + ")" } );                     
     var gGrid = svgTmptPlot.append( "g" )
-                        .attr( "class", "grid" );
+                    .attr( "class", "grid" );
     var gTmptPlot = svgTmptPlot.append( "g" )
-                                 .attr( "class", "plotRects" );
+                        .attr( "class", "plotRects" );
     var gScreen = svgTmptPlot.append( "g" )
-                                 .attr( "class", "screen" );
+                      .attr( "class", "screen" );
+
+
+
 
 div.container-fluid.lvmaindiv( ng-controller='CamCtrl' )
     div.row.alert.alert-warning( ng-repeat="message in getMessages()", role="alert" )

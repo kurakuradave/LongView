@@ -207,17 +207,19 @@ angular.module( 'LongViewApp', ['ngRoute'] )
         };
         
         $scope.placeNewOb = function ( d, i ) {
+            // uncomment for "travelling" effect
             //if( d.index < 20 )
-            //    return( i * 10 );
+            //    return( i * plotEye.width );
             //else
-                return( 19 * 10 );
+                return( 19 * plotEye.width );
         };
         
         $scope.placeOldObs = function ( d, i ) {
+            // uncomment for "travelling" effect
             //if( $scope.hyperObsIndex < 20 )
-            //    return( d.index * 10 );
+            //    return( d.index * plotEye.width );
             //else
-                return( (d.index - ($scope.hyperObsIndex - 20) ) * 10 );
+                return( (d.index - ($scope.hyperObsIndex - 20) ) * plotEye.width );
         };
         
         $scope.determineFill = function( d, i ) {
@@ -237,17 +239,19 @@ angular.module( 'LongViewApp', ['ngRoute'] )
                 
             rects.enter()
                 .append( "rect" )
-                .attr( "x", function( d, i ) { return 20 + $scope.placeNewOb( d, i );  } )
-                .attr( "y", function( d, i ) { return ( 40 + $scope.scaleTmpt( d.Temperature ) - 5 ) } )
-                .attr( "width", 10 )
-                .attr( "height", 10 );
+                .attr( { "x" : function( d, i ) { return margin.left + $scope.placeNewOb( d, i );  }, 
+                         "y" : function( d, i ) { return ( margin.top + $scope.scaleTmpt( d.Temperature ) - plotEye.ymid ) },
+                         "width" : plotEye.width,
+                         "height" : plotEye.height 
+                       } );
 
             rects
-                .attr( "x", function( d, i ) { return 20 + $scope.placeOldObs( d, i );  } )
-                .attr( "y", function( d, i ) { return ( 40 + $scope.scaleTmpt( d.Temperature ) - 5 ) } )
-                .attr( "width", 10 )
-                .attr( "height", 10 )
-                .attr( "fill", function( d, i ) { return $scope.determineFill( d, i ) } );          
+                .attr( { "x" : function( d, i ) { return margin.left + $scope.placeOldObs( d, i );  },
+                         "y" : function( d, i ) { return ( margin.top + $scope.scaleTmpt( d.Temperature ) - plotEye.ymid ) },
+                         "width" : plotEye.width,
+                         "height" : plotEye.height,
+                         "fill" : function( d, i ) { return $scope.determineFill( d, i ) } 
+                       } );          
             
             if( $scope.shouldClearObs ) {
                 $scope.shouldClearObs = false;
@@ -259,7 +263,7 @@ angular.module( 'LongViewApp', ['ngRoute'] )
         };
         
         $scope.updateAirpPlot = function(){
-        
+            // not yet implemented
         };
         
         $scope.adjustScale = function( data ) {
@@ -293,12 +297,12 @@ angular.module( 'LongViewApp', ['ngRoute'] )
             gTitle.append( "text" )
                 .attr( "class", "dynamicTitle" )
                 .text( "LIVE Datastream" )
-                .attr( "x", 50 )
-                .attr( "y", 15 )
-                .style( "font-style", "8px" )
-                .style( "font-family", "sans-serif" )
-                .style("text-anchor", "middle")    
-                .style( "fill", "red" );            
+                    .attr( { "x" : 50,
+                             "y" : 15  } )
+                    .style( { "font-style" : "8px",
+                              "font-family" : "sans-serif",
+                              "text-anchor" : "middle",    
+                              "fill" : "red" } );            
         };
         
         $scope.resumeTmptPlot = function() {
@@ -321,12 +325,12 @@ angular.module( 'LongViewApp', ['ngRoute'] )
                     $scope.remDynamicTitle();
                     gScreen
                         .append( "rect" )
-                        .attr( "x", 0 )
-                        .attr( "y", 0 )
-                        .attr( "width", 300 )
-                        .attr( "height", 300 )
-                        .style( "fill-opacity", 0.3 )
-                        .style( "fill", "black" );
+                        .attr( { "x" : 0,
+                                 "y" : 0,
+                                 "width" : plot.width,
+                                 "height":  plot.height } )
+                        .style( { "fill-opacity" : 0.3,
+                                  "fill" : "black" } );
                 }
             }
         };
