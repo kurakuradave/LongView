@@ -24,7 +24,7 @@ angular.module( 'LongViewApp', ['ngRoute'] )
         }
     } ] )
     .config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider){
-         //$locationProvider.html5Mode( true );
+         $locationProvider.html5Mode( {enabled: true} );
             $routeProvider.when( '/', {
                 templateUrl : './index.jade',
                 controller : 'HomeCtrl'
